@@ -199,3 +199,10 @@ README.html
 *.iml
 .idea
 .exercism
+
+# build files
+/build
+/gradle
+/gradlew.bat
+/.gradle
+gradlew
