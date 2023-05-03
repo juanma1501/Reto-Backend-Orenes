@@ -9,9 +9,8 @@ import retoBackendOrenes.RetoBackend.orders.domain.UpdateAndRegisterOrderRequest
 import retoBackendOrenes.RetoBackend.orders.infrastructure.OrderRepository;
 import retoBackendOrenes.RetoBackend.shared.ResponseMessage;
 import retoBackendOrenes.RetoBackend.shared.ResponseWrapper;
-import retoBackendOrenes.RetoBackend.vehicles.domain.RegisterVehicleRequest;
-import retoBackendOrenes.RetoBackend.vehicles.domain.Vehicle;
-import retoBackendOrenes.RetoBackend.vehicles.infrastructure.VehicleRepository;
+import retoBackendOrenes.RetoBackend.users.domain.User;
+import retoBackendOrenes.RetoBackend.users.infrastructure.UserRepository;
 
 import java.util.Optional;
 
@@ -21,6 +20,9 @@ public class RegisterOrder {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public ResponseWrapper<Boolean> registerOrder(UpdateAndRegisterOrderRequest updateAndRegisterOrderRequest) {
 
@@ -32,6 +34,7 @@ public class RegisterOrder {
             registerOrderWrapper.setResponse(Boolean.FALSE);
             registerOrderWrapper.setCode(ResponseCodes.GENERIC_ERROR.getResponseCode());
             registerOrderWrapper.setMessage(new ResponseMessage("El pedido que has introducido ya está registrado o el número de pedido está vacío."));
+            return registerOrderWrapper;
         }else{
             Order newOrder = new Order();
             newOrder.setOrderNumber(updateAndRegisterOrderRequest.getOrderNumber());
@@ -40,7 +43,16 @@ public class RegisterOrder {
             newOrder.setDeliveryAddress(updateAndRegisterOrderRequest.getDeliveryAddress());
             newOrder.setOriginAddress(updateAndRegisterOrderRequest.getOriginAddress());
             newOrder.setWeight(updateAndRegisterOrderRequest.getWeight());
-            newOrder.setUserId(updateAndRegisterOrderRequest.getUserId());
+
+            Optional<User> user = userRepository.findByUsername(updateAndRegisterOrderRequest.getClient());
+            if(user.isEmpty()) {
+                registerOrderWrapper.setResponse(Boolean.FALSE);
+                registerOrderWrapper.setCode(ResponseCodes.GENERIC_ERROR.getResponseCode());
+                registerOrderWrapper.setMessage(new ResponseMessage("El cliente que has introducido no existe. Introduce un usuario registrado."));
+                return registerOrderWrapper;
+            }
+
+            newOrder.setClient(user.get());
 
             orderRepository.save(newOrder);
 

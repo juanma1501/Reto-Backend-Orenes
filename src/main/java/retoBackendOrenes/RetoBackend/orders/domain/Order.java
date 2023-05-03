@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import retoBackendOrenes.RetoBackend.users.domain.User;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ public class Order {
     @Id
     private String orderNumber;
 
-    private String userId;
+    private User client;
 
     private Date creationDate;
 

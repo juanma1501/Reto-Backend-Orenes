@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class UpdateAndRegisterOrderRequest {
     private String OrderNumber;
-    private String userId;
+    private String client;
     private Date creationDate;
     private Date deliveryDate;
     private String originAddress;
