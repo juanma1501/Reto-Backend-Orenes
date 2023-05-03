@@ -24,4 +24,6 @@ public class UserController {
     public ResponseWrapper<List<User>> allUsers () {
         return getAllUsers.getAllUsers();
     }
+
+
 }

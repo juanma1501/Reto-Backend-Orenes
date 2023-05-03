@@ -1,4 +1,4 @@
-package retoBackendOrenes.RetoBackend.vehicles.infrastructure;
+package retoBackendOrenes.RetoBackend.orders.infrastructure;
 
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,36 +7,35 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import retoBackendOrenes.RetoBackend.orders.application.DeleteOrder;
+import retoBackendOrenes.RetoBackend.orders.application.GetAllOrders;
+import retoBackendOrenes.RetoBackend.orders.application.GetOrder;
+import retoBackendOrenes.RetoBackend.orders.application.RegisterOrder;
+import retoBackendOrenes.RetoBackend.orders.domain.DeleteOrderRequest;
+import retoBackendOrenes.RetoBackend.orders.domain.Order;
+import retoBackendOrenes.RetoBackend.orders.domain.UpdateAndRegisterOrderRequest;
 import retoBackendOrenes.RetoBackend.shared.ResponseWrapper;
-import retoBackendOrenes.RetoBackend.vehicles.application.*;
-import retoBackendOrenes.RetoBackend.vehicles.domain.DeleteVehicleRequest;
-import retoBackendOrenes.RetoBackend.vehicles.domain.RegisterVehicleRequest;
-import retoBackendOrenes.RetoBackend.vehicles.domain.UpdateVehicleRequest;
-import retoBackendOrenes.RetoBackend.vehicles.domain.Vehicle;
 
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/vehicles")
-public class VehicleController {
+@RequestMapping("/orders")
+public class OrderController {
 
     @Autowired
-    RegisterVehicle registerVehicle;
+    DeleteOrder deleteOrder;
 
     @Autowired
-    GetVehicle getVehicle;
+    GetAllOrders getAllOrders;
 
     @Autowired
-    UpdateVehicle updateVehicle;
+    GetOrder getOrder;
 
     @Autowired
-    GetAllVehicles getAllVehicles;
+    RegisterOrder registerOrder;
 
-    @Autowired
-    DeleteVehicle deleteVehicle;
-
-    @Operation(summary = "To register a vehicle")
+    @Operation(summary = "To register an order.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content),
@@ -47,12 +46,13 @@ public class VehicleController {
             @ApiResponse(responseCode = "5XX", description = "Server Error",
                     content = @Content)
     })
-    @PostMapping("/registerVehicle")
-    public ResponseWrapper<Boolean> registerVehicle (@RequestBody RegisterVehicleRequest registerVehicleRequest) {
-        return registerVehicle.registerVehicle(registerVehicleRequest);
+    @PostMapping("/registerOrder")
+    public ResponseWrapper<Boolean> registerOrder (@RequestBody UpdateAndRegisterOrderRequest updateAndRegisterOrderRequest) {
+        return registerOrder.registerOrder(updateAndRegisterOrderRequest);
     }
 
-    @Operation(summary = "To find a vehicle by plate")
+
+    @Operation(summary = "To get an order.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content),
@@ -63,13 +63,14 @@ public class VehicleController {
             @ApiResponse(responseCode = "5XX", description = "Server Error",
                     content = @Content)
     })
-    @GetMapping("/vehicle/{plate}")
-    ResponseWrapper<Vehicle> getVehicle(@PathVariable("plate") String plate) {
-        return getVehicle.getVehicle(plate);
+    @GetMapping("/order/{orderNumber}")
+    public ResponseWrapper<Order> registerOrder (@PathVariable("orderNumber") String orderNumber) {
+        return getOrder.getOrder(orderNumber);
     }
 
 
-    @Operation(summary = "To update a vehicle")
+
+    @Operation(summary = "To get all orders.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content),
@@ -80,13 +81,13 @@ public class VehicleController {
             @ApiResponse(responseCode = "5XX", description = "Server Error",
                     content = @Content)
     })
-    @PostMapping("/updateVehicle")
-    public ResponseWrapper<Boolean> registerVehicle (@RequestBody UpdateVehicleRequest updateVehicleRequest) {
-        return updateVehicle.updateVehicle(updateVehicleRequest);
+    @GetMapping("/getAllOrders")
+    public ResponseWrapper<List<Order>> registerOrder () {
+        return getAllOrders.getAllOrders();
     }
 
 
-    @Operation(summary = "Get all vehicles")
+    @Operation(summary = "To delete an order.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content),
@@ -97,27 +98,8 @@ public class VehicleController {
             @ApiResponse(responseCode = "5XX", description = "Server Error",
                     content = @Content)
     })
-    @GetMapping("/getAllVehicles")
-    public ResponseWrapper<List<Vehicle>> getAllVehicles () {
-        return getAllVehicles.getAllVehicles();
+    @DeleteMapping("/deleteOrder")
+    public ResponseWrapper<Boolean> registerOrder (DeleteOrderRequest deleteOrderRequest) {
+        return deleteOrder.deleteOrder(deleteOrderRequest);
     }
-
-
-    @Operation(summary = "Delete a vehicle by plate")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
-                    content = @Content),
-            @ApiResponse(responseCode = "400", description = "Bad Request",
-                    content = @Content),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content),
-            @ApiResponse(responseCode = "5XX", description = "Server Error",
-                    content = @Content)
-    })
-    @DeleteMapping("/deleteVehicle")
-    public ResponseWrapper<Boolean> deleteVehicle (@RequestBody DeleteVehicleRequest deleteVehicleRequest) {
-        return deleteVehicle.deleteVehicle(deleteVehicleRequest);
-    }
-
-
 }

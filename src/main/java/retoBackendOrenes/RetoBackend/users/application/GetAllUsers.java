@@ -25,10 +25,13 @@ public class GetAllUsers {
         if (userRespond != null) {
             usersWrapper.setResponse(userRespond);
             if (userRespond.size() > 0) {
+                usersWrapper.setResponse(userRespond);
                 usersWrapper.setCode(ResponseCodes.SUCCESS.getResponseCode());
+                usersWrapper.setMessage(new ResponseMessage(ResponseCodes.SUCCESS.getDescription()));
             } else {
+                usersWrapper.setResponse(null);
                 usersWrapper.setCode(ResponseCodes.ERROR_NOT_FOUND.getResponseCode());
-                usersWrapper.setMessage(new ResponseMessage("Users not found"));
+                usersWrapper.setMessage(new ResponseMessage("No hay ningún usuario en la BBDD."));
             }
         } else {
             usersWrapper.setResponse(null);
