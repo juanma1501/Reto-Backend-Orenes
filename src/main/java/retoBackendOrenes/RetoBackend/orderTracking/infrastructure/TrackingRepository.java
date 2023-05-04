@@ -13,6 +13,8 @@ public interface TrackingRepository extends MongoRepository<OrderTracking, Strin
 
     List<OrderTracking> findByOrder_client_username(String email);
 
+    List<OrderTracking> findByOrder_OrderNumber(String orderNumber);
+
     List<OrderTracking> findAll();
 
 }

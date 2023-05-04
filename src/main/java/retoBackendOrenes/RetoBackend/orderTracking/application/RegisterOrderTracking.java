@@ -59,6 +59,20 @@ public class RegisterOrderTracking  {
             return  wrapper;
         }
 
+        if (registerOrderTrackingRequest.getCoordinates().size() != 2){
+            wrapper.setResponse(Boolean.FALSE);
+            wrapper.setCode(ResponseCodes.GENERIC_ERROR.getResponseCode());
+            wrapper.setMessage(new ResponseMessage("Introduce dos coordenadas."));
+            return  wrapper;
+        }
+
+        if(!trackingRepository.findByOrder_OrderNumber(order.get().getOrderNumber()).isEmpty() || !trackingRepository.findByTrackingNumber(registerOrderTrackingRequest.getTrackingNumber()).isEmpty()){
+            wrapper.setResponse(Boolean.FALSE);
+            wrapper.setCode(ResponseCodes.GENERIC_ERROR.getResponseCode());
+            wrapper.setMessage(new ResponseMessage("Ya hay un seguimiento con ese número de seguimiento o pedido."));
+            return  wrapper;
+        }
+
         orderTracking.setTrackingNumber(registerOrderTrackingRequest.getTrackingNumber());
         orderTracking.setOrder(order.get());
         orderTracking.setVehicle(vehicle.get());
