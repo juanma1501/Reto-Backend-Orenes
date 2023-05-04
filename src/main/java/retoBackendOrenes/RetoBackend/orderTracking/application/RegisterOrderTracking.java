@@ -3,6 +3,7 @@ package retoBackendOrenes.RetoBackend.orderTracking.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import retoBackendOrenes.RetoBackend.emailNotifications.Email;
 import retoBackendOrenes.RetoBackend.enums.ResponseCodes;
 import retoBackendOrenes.RetoBackend.orderTracking.domain.OrderTracking;
 import retoBackendOrenes.RetoBackend.orderTracking.domain.RegisterOrderTrackingRequest;
@@ -80,6 +81,12 @@ public class RegisterOrderTracking  {
         orderTracking.setFeatureCollection(featureCollection);
 
         trackingRepository.save(orderTracking);
+
+        String email = orderTracking.getOrder().getClient().getUsername();
+
+        Email sender = new Email();
+        sender.send(email, "Su pedido está de camino", "Estimado cliente \n su pedido ha salido hacia su destino desde nuestras instalaciones de " + orderTracking.getOrder().getOriginAddress()
+        + " hacia " + orderTracking.getOrder().getDeliveryAddress());
 
         wrapper.setResponse(Boolean.TRUE);
         wrapper.setCode(ResponseCodes.SUCCESS.getResponseCode());
