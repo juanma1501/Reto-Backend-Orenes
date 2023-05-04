@@ -16,6 +16,7 @@ import retoBackendOrenes.RetoBackend.shared.ResponseWrapper;
 
 import javax.management.Query;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,25 +29,28 @@ public class UpdateOrderTracking {
     public ResponseWrapper<Boolean> updateTrackingOrder (UpdateOrderTrackingRequest updateOrderTrackingRequest){
         ResponseWrapper<Boolean> wrapper = new ResponseWrapper<>();
 
-        Optional<OrderTracking> orderTracking = trackingRepository.findByTrackingNumber(updateOrderTrackingRequest.getTrackingNumber());
+        List<OrderTracking> orderTrackings = trackingRepository.findByTrackingNumber(updateOrderTrackingRequest.getTrackingNumber());
 
-        if (orderTracking.isEmpty()){
+        if (orderTrackings.isEmpty()){
             wrapper.setResponse(Boolean.FALSE);
             wrapper.setCode(ResponseCodes.GENERIC_ERROR.getResponseCode());
             wrapper.setMessage(new ResponseMessage("No hay ningún seguimiento con ese número."));
             return  wrapper;
         }
 
-        orderTracking.get()
+        Collections.reverse(orderTrackings);
+        OrderTracking orderTracking = orderTrackings.get(0);
+
+        orderTracking
                 .getFeatureCollection()
                 .getFeatures()
                 .get(0).getGeometry()
                 .getCoordinates()
                 .add(Arrays.asList(updateOrderTrackingRequest.getCoordinates().get(0), updateOrderTrackingRequest.getCoordinates().get(1)));
 
-        orderTracking.get().setLastUpdate(updateOrderTrackingRequest.getLastUpdate());
+        orderTracking.setLastUpdate(updateOrderTrackingRequest.getLastUpdate());
 
-        trackingRepository.save(orderTracking.get());
+        trackingRepository.save(orderTracking);
 
         wrapper.setResponse(Boolean.TRUE);
         wrapper.setCode(ResponseCodes.SUCCESS.getResponseCode());
