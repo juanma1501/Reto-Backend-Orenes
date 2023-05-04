@@ -35,7 +35,7 @@ public class RegisterOrderTracking  {
     @Autowired
     VehicleRepository vehicleRepository;
 
-    public ResponseWrapper<Boolean> registerOrder (RegisterOrderTrackingRequest registerOrderTrackingRequest){
+    public ResponseWrapper<Boolean> registerOrderTracking (RegisterOrderTrackingRequest registerOrderTrackingRequest){
 
         ResponseWrapper<Boolean> wrapper = new ResponseWrapper<>();
         OrderTracking orderTracking = new OrderTracking();
@@ -78,6 +78,8 @@ public class RegisterOrderTracking  {
         featureCollection.setFeatures(featureList);
 
         orderTracking.setFeatureCollection(featureCollection);
+
+        trackingRepository.save(orderTracking);
 
         wrapper.setResponse(Boolean.TRUE);
         wrapper.setCode(ResponseCodes.SUCCESS.getResponseCode());

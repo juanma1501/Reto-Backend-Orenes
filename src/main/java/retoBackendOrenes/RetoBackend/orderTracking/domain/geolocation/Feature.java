@@ -1,10 +1,11 @@
 package retoBackendOrenes.RetoBackend.orderTracking.domain.geolocation;
 
 import lombok.Data;
+import org.json.JSONObject;
 
 @Data
 public class Feature {
-    private final String type = "Feature";
-    private final Object properties = new Object();
+    private  String type = "Feature";
+    private  JSONObject properties = new JSONObject();
     private Geometry geometry;
 }
