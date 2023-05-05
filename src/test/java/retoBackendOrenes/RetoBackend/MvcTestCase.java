@@ -59,8 +59,7 @@ public class MvcTestCase {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.
                 post(url).
                 contentType("application/json").
-                content(jso.toString())
-                .with(csrf());
+                content(jso.toString());
 
         if (session!=null)
             request.session((MockHttpSession) session);
@@ -78,8 +77,7 @@ public class MvcTestCase {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
                 .delete(url)
                 .contentType("application/json")
-                .content(jso.toString())
-                .with(csrf());
+                .content(jso.toString());
 
         if (session != null)
             request.session((MockHttpSession) session);
@@ -93,8 +91,7 @@ public class MvcTestCase {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.
                 post(url).
                 contentType("application/json").
-                content(jso.toString())
-                .with(csrf());
+                content(jso.toString());
 
         if (session!=null)
             request.session((MockHttpSession) session);
@@ -112,8 +109,7 @@ public class MvcTestCase {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.
                 put(url).
                 contentType("application/json").
-                content(jso.toString())
-                .with(csrf());
+                content(jso.toString());
 
         return mvc.perform(request);
     }
@@ -124,8 +120,7 @@ public class MvcTestCase {
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.
                 put(url).
                 contentType("application/json").
-                content(jso.toString())
-                .with(csrf());
+                content(jso.toString());
 
         if (session!=null)
             request.session((MockHttpSession) session);
