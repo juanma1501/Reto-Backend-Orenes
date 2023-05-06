@@ -23,12 +23,14 @@ public class WebSecurityConfig {
         return new InMemoryUserDetailsManager(user);
     }
 
+
     @Bean
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
